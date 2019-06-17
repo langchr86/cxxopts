@@ -114,6 +114,18 @@ overridden. The effect is that writing `-o` by itself will set option `o` to
 `true`. However, they can also be written with various strings using either
 `=value` or the next argument.
 
+## `std::vector<T>` values
+
+Parsing of list of values in form of an `std::vector<T>` is also supported, as long as `T`
+can be parsed. To separate single values in a list the definition `CXXOPTS_VECTOR_DELIMITER`
+is used, which is ',' by default. Ensure that you use no whitespaces between values because
+those would be interpreted as the next command line option. Example for a command line option
+that can be parsed as a `std::vector<double>`:
+
+~~~
+--my_list=1,-2.1,3,4.5
+~~~
+
 ## Custom help
 
 The string after the program name on the first line of the help can be

@@ -43,6 +43,10 @@ THE SOFTWARE.
 #define CXXOPTS_HAS_OPTIONAL
 #endif
 
+#ifndef CXXOPTS_VECTOR_DELIMITER
+#define CXXOPTS_VECTOR_DELIMITER ','
+#endif
+
 namespace cxxopts
 {
   static constexpr struct {
@@ -697,9 +701,13 @@ namespace cxxopts
     void
     parse_value(const std::string& text, std::vector<T>& value)
     {
-      T v;
-      parse_value(text, v);
-      value.push_back(v);
+      std::stringstream in(text);
+      std::string token;
+      while(in.eof() == false && std::getline(in, token, CXXOPTS_VECTOR_DELIMITER)) {
+        T v;
+        parse_value(token, v);
+        value.emplace_back(std::move(v));
+      }
     }
 
 #ifdef CXXOPTS_HAS_OPTIONAL
